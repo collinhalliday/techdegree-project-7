@@ -20,7 +20,7 @@ div(class="bounds app--body")
         h2 Timeline
     div.grid-33
       div.app--section--heading
-        strong 129
+        strong #{tweets[0].user.friends_count}
         h2 Following
     div.grid-33
       div.app--section--heading
@@ -69,56 +69,17 @@ div(class="bounds app--body")
   div.grid-33
     div.app--section
       ul.app--user--list
-        li
-          div.circle--fluid
-            div(class="circle--fluid--cell circle--fluid--primary")
-              a(class="app--tweet--author")
-                div(class="app--avatar", style="background-image: url(images/f-spore.png)")
-                  img(src="images/f-spore.png")
-                h4 Jill Spore
-                p @jillspore
-            div.circle--fluid--cell
-              a(class="button button-text") Unfollow
-        li
-          div.circle--fluid
-            div(class="circle--fluid--cell circle--fluid--primary")
-              a(class="app--tweet--author")
-                div(class="app--avatar", style="background-image: url(images/f-spore.png)")
-                  img(src="images/f-spore.png")
-                h4 Jill Spore
-                p @jillspore
-            div(class="circle--fluid--cell")
-              a(class="button button-text") Unfollow
-        li
-          div.circle--fluid
-            div(class="circle--fluid--cell circle--fluid--primary")
-              a(class="app--tweet--author")
-                div(class="app--avatar", style="background-image: url(images/f-spore.png)")
-                  img(src="images/f-spore.png")
-                h4 Jill Spore
-                p @jillspore
-            div(class="circle--fluid--cell")
-              a(class="button button-text") Unfollow
-        li
-          div.circle--fluid
-            div(class="circle--fluid--cell circle--fluid--primary")
-              a(class="app--tweet--author")
-                div(class="app--avatar", style="background-image: url(images/f-spore.png)")
-                  img(src="images/f-spore.png")
-                h4 Jill Spore
-                p @jillspore
-            div.circle--fluid--cell
-              a(class="button") Follow
-        li
-          div.circle--fluid
-            div(class="circle--fluid--cell circle--fluid--primary")
-              a(class="app--tweet--author")
-                div(class="app--avatar" style="background-image: url(images/f-spore.png)")
-                  img(src="images/f-spore.png")
-                h4 Jill Spore
-                p @jillspore
-            div(class="circle--fluid--cell")
-              a(class="button button-text") Unfollow
+        each friend, index in friends
+          li
+            div.circle--fluid
+              div(class="circle--fluid--cell circle--fluid--primary")
+                a(class="app--tweet--author")
+                  div(class="app--avatar", style=`background-image: url(${friend.profile_image_url})`)
+                    img(src=`${friend.profile_image_url}`)
+                  h4(class="friend-name") #{friend.name}
+                  p(class="screen-name") #{friend.screen_name}
+              div.circle--fluid--cell
+                a(class="unfollow button button-text") Unfollow
 
   div.grid-33
     div.app--section

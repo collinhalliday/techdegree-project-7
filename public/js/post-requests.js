@@ -5,6 +5,9 @@ document.addEventListener("DOMContentLoaded", function(){
   const retweetLinks = document.getElementsByClassName('app--retweet');
   const replyLinks = document.getElementsByClassName('app--reply');
   const timeStamps = document.getElementsByClassName('time-stamp');
+  const unfollowLinks = document.getElementsByClassName('unfollow');
+  const friendNames = document.getElementsByClassName('friend-name');
+  const friendUserNames = document.getElementsByClassName('screen-name');
 
   const pictureElements = document.getElementsByClassName('app--avatar');
   let pictureUrl;
@@ -20,6 +23,10 @@ document.addEventListener("DOMContentLoaded", function(){
     });
     retweetLinks[i].parentNode.addEventListener('click', function () {
       post('/retweet', { created_at: `${timeStamps[i].textContent}` }, 'post');
+    });
+    unfollowLinks[i].addEventListener('click', function() {
+      console.log('poop');
+      post('/unfollow', { name: `${friendNames[i].textContent}`, screen_name: `${friendUserNames[i].textContent}` }, 'post');
     });
     replyLinks[i].parentNode.addEventListener('click', function (event) {
       let index;
