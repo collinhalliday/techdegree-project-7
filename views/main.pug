@@ -35,10 +35,7 @@ div(class="bounds app--body")
             a(class="app--tweet--author" href=`http://twitter.com/${tweet.user.screen_name}`)
               div(class="app--avatar", style=`background-image: url(${tweet.user.profile_image_url})`)
               <h4>Collin Halliday</h4> @CollinHalliday1
-            if(tweet.hashLinkText)
-              p !{tweet.hashLinkText}
-            else
-              p #{tweet.text}
+            p !{tweet.text}
             ul(class="app--tweet--actions circle--list--inline")
               li
                 a(class="app--reply")
@@ -73,7 +70,7 @@ div(class="bounds app--body")
           li
             div.circle--fluid
               div(class="circle--fluid--cell circle--fluid--primary")
-                a(class="app--tweet--author")
+                a(class="app--tweet--author" href=`http://twitter.com/${friend.screen_name}`)
                   div(class="app--avatar", style=`background-image: url(${friend.profile_image_url})`)
                     img(src=`${friend.profile_image_url}`)
                   h4(class="friend-name") #{friend.name}
@@ -82,33 +79,23 @@ div(class="bounds app--body")
                 a(class="unfollow button button-text") Unfollow
 
   div.grid-33
-    div.app--section
+    div(class="app--section scroll")
       ul(class="app--message--list")
-        li
-          h3 Conversation with #[a Jill Spore]
-          ul(class="app--message--conversation")
-            li(class="app--message")
-              div(class="app--avatar", style="background-image: url(images/f-spore.png)")
-                img(src="images/f-spore.png")
-              p(class="app--message--text") How are things?
-              p(class="app--message--timestamp") 3 hours ago
-            li(class="app--message--me")
-              div(class="app--avatar", style="background-image: url(images/m-spore.png)")
-                img(src="images/m-spore.png")
-              p(class="app--message--text") Great! How about you? Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              p(class="app--message--timestamp") 2 hours ago
-            li(class="app--message")
-              div(class="app--avatar", style="background-image: url(images/f-spore.png)")
-                img(src="images/f-spore.png")
-              p(class="app--message--text") Fantastic! You wanna grab lunch?
-              p(class="app--message--timestamp") 2 hours ago
-            li(class="app--message--me")
-              div(class="app--avatar", style="background-image: url(images/m-spore.png)")
-                img(src="images/m-spore.png")
-              p(class="app--message--text") Totes mcgotes. How about Mackey's?
-              p(class="app--message--timestamp") 1 hour ago
-            li(class="app--message")
-              div(class="app--avatar", style="background-image: url(images/f-spore.png)")
-                img(src="images/f-spore.png")
-              p(class="app--message--text") Aww yeah.. I'm craving a Triple Quarter Mack!
-              p(class="app--message--timestamp") 1 hour ago
+        each convo, index in convoWithArray
+          li
+            h3 Conversation with #[a(href=`http://twitter.com/${convoWithScreenNameArray[index]}`) #{convo}]
+            ul(class="app--message--conversation")
+              each message, index in messages
+                if(index < 5 && message.convoWith === convo)
+                  if(message.senderInfo.name.indexOf('Collin Halliday') > -1)
+                    li(class="app--message--me")
+                      a(href=`http://twitter.com/${message.senderInfo.screen_name}`)
+                        div(class="app--avatar", style=`background-image: url(${message.senderInfo.profile_image_url})`)
+                      p(class="app--message--text") !{messages[index].text}
+                      p(class="app--message--timestamp") #{messages[index].timeSent}
+                  else
+                    li(class="app--message")
+                      a(href=`http://twitter.com/${message.senderInfo.screen_name}`)
+                        div(class="app--avatar", style=`background-image: url(${message.senderInfo.profile_image_url})`)
+                      p(class="app--message--text") !{messages[index].text}
+                      p(class="app--message--timestamp") #{messages[index].timeSent}

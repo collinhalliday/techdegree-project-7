@@ -171,7 +171,7 @@ function createModalWindow(index) {
        html += '<p class="modal-dot">.</p>';
        html += '<p class="modal-time-sent">' + timeSent + '</p>';
        //html += '<p class="modal-message">' + message + '</p>';
-       html += '<p class="modal-message">' + createHashLinks(messageElement) + '</p>';
+       html += '<p class="modal-message">' + createLinks(messageElement) + '</p>';
        html += '</div>';
        html += '<div class="form">';
        html += '<form action="/reply" method="post">';
@@ -227,18 +227,55 @@ function removeOverlay() {
   overlay.style.zIndex = '';
 }
 
-function createHashLinks(messageElement) {
+// function createHashLinks(messageElement) {
+//   if(messageElement.hasChildNodes()) {
+//     let messageArray = messageElement.textContent.split('#');
+//     let alternativeText = '';
+//     for(let i = 0; i < messageArray.length; i++) {
+//       if(i > 0)
+//         alternativeText += `<a class="hashlinks" href="http://twitter.com/hashtag/${messageArray[i]}?src=hash"> #${messageArray[i]}</a>`;
+//       else
+//         alternativeText += messageArray[i] + ' ';
+//     }
+//     return alternativeText;
+//   }
+// }
+
+function createLinks(messageElement) {
   if(messageElement.hasChildNodes()) {
-    let messageArray = messageElement.textContent.split('#');
+    let messageArray = messageElement.textContent.split(' ');
     let alternativeText = '';
     for(let i = 0; i < messageArray.length; i++) {
-      if(i > 0)
-        alternativeText += `<a class="hashlinks" href="http://twitter.com/hashtag/${messageArray[i]}?src=hash"> #${messageArray[i]}</a>`;
+      if(messageArray[i].indexOf('://') > -1)
+        alternativeText += `<a class="links" href="${messageArray[i]}"> ${messageArray[i]}</a> `;
       else
         alternativeText += messageArray[i] + ' ';
+      console.log(messageArray[i]);
+    }
+    messageArray = alternativeText.split(' ');
+    alternativeText = '';
+    for(let i = 0; i < messageArray.length; i++) {
+      if(messageArray[i].indexOf('#') > -1) {
+        messageArray[i] = messageArray[i].replace('#', '');
+        alternativeText += `<a class="hashlinks" href="http://twitter.com/hashtag/${messageArray[i]}?src=hash"> #${messageArray[i]}</a> `;
+      } else
+          alternativeText += messageArray[i] + ' ';
     }
     return alternativeText;
   }
 }
+
+// function createLinks(data) {
+//   let messageArray = data.text.split(' ');
+//   let alternativeText = '';
+//   for(let i = 0; i < messageArray.length; i++) {
+//     if(messageArray[i].indexOf('://') > -1)
+//     //  alternativeText += `<a href="http://twitter.com/hashtag/${messageArray[i]}?src=hash">#${messageArray[i]}</a>`;
+//       alternativeText += `<a class="links" href="${messageArray[i]}"> ${messageArray[i]}</a>`;
+//     else
+//       alternativeText += messageArray[i] + ' ';
+//   }
+//   return alternativeText;
+// }
 
 });

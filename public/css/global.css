@@ -2503,10 +2503,31 @@ input[type="button"] {
 
 /* Removing underlining from added links */
 
+.links,
 .hashlinks,
-.app--tweet--author {
+.app--tweet--author,
+.app--message--list > li > h3 > a {
   text-decoration: none;
 }
+
+/* Setting colors for message links */
+
+p.app--message--text > .hashlinks,
+p.app--message--text > .links {
+  color: #0000FF;
+}
+
+p.app--message--text > .hashlinks:hover,
+p.app--message--text > .links:hover {
+  color: #000099;
+}
+
+/* Allowing scroll on message div to see messages otherwise cut off by tweet div */
+.scroll {
+  overflow: scroll;
+  height: 75%;
+}
+
 
 /*************************************************** MODAL WINDOW ***********************************************/
 
@@ -2609,6 +2630,7 @@ input[type="button"] {
   position: absolute;
   left: 17%;
   top: 40%;
+  margin-right: 10px;
 }
 
 .form {
