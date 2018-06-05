@@ -3,15 +3,15 @@ include layout
 block main
 
 div.app--tweet
-  form
+  form(id="tweet-form" action="/tweet", method="post")
     div.circle--fluid
       div(class="circle--fluid--cell circle--fluid--primary align-bottom app--tweet--post")
-        div(class="app--avatar", style="background-image: url(images/m-spore.png)")
-          img(src="images/m-spore.png")
+        div(class="app--avatar", style=`background-image: url(${userInfo.profile_image_url})`)
         textarea(class="circle--textarea--input", placeholder="What's happening?", id="tweet-textarea")
-        strong(class="app--tweet--char", id="tweet-char") 140
+        input(id="tweet-input", name="tweet", type="hidden", value="")
+        strong(class="app--tweet--char", id="tweet-char") 0
       div(class="circle--fluid--cell align-bottom")
-        button(class="button-primary") Tweet
+        button(class="button-primary no-hover", style="opacity: .5;" disabled) Tweet
 
 div(class="bounds app--body")
   div(class="app--section--header")
@@ -34,7 +34,7 @@ div(class="bounds app--body")
             strong(class="app--tweet--timestamp") #{tweet.postedValue}
             a(class="app--tweet--author" href=`http://twitter.com/${tweet.user.screen_name}`)
               div(class="app--avatar", style=`background-image: url(${tweet.user.profile_image_url})`)
-              <h4>Collin Halliday</h4> @CollinHalliday1
+              <h4>#{userInfo.name}</h4> @#{userInfo.screen_name}
             p !{tweet.text}
             ul(class="app--tweet--actions circle--list--inline")
               li
@@ -87,7 +87,7 @@ div(class="bounds app--body")
             ul(class="app--message--conversation")
               each message, index in messages
                 if(index < 5 && message.convoWith === convo)
-                  if(message.senderInfo.name.indexOf('Collin Halliday') > -1)
+                  if(message.senderInfo.name.indexOf(userInfo.name) > -1)
                     li(class="app--message--me")
                       a(href=`http://twitter.com/${message.senderInfo.screen_name}`)
                         div(class="app--avatar", style=`background-image: url(${message.senderInfo.profile_image_url})`)

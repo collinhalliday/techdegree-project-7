@@ -20,11 +20,12 @@ function formatTimeStamp(timeStamp) {
   return new Date(parseInt(timeStamp)).toString();
 }
 
-function formatDatePosted(dateAndTimePosted, isMessageDate) {
+function formatDatePosted(dateAndTimePosted, isMessageDate, isYears) {
+  isYears = isYears || false;
   function getMonthInt() {
     return new Date(dateAndTimePosted).getMonth() + 1;
   }
-  function formatTime() {
+  function formatTime(timePosted) {
     let hourPosted = timePosted.split(':')[0];
     let minutePosted = timePosted.split(':')[1];
     if(hourPosted > 12) {
@@ -33,15 +34,23 @@ function formatDatePosted(dateAndTimePosted, isMessageDate) {
     }
     return hourPosted + ':' + minutePosted + ' AM';
   }
-  let timePostedArray = dateAndTimePosted.split(' ');
-  let monthPosted = timePostedArray[1];
-  let dayPosted = timePostedArray[2];
-  let timePosted = timePostedArray[3];
-  let yearPosted = timePostedArray[5];
-  if(isMessageDate)
-    return getMonthInt() + '/' + dayPosted + '/' + yearPosted + ', ' + formatTime();
-  else
-    return monthPosted + ' ' + dayPosted;
+  if(isMessageDate) {
+    let timePostedArray = dateAndTimePosted.split(' ');
+    let monthPosted = timePostedArray[1];
+    let dayPosted = timePostedArray[2];
+    let timePosted = timePostedArray[4];
+    let yearPosted = timePostedArray[3];
+    return getMonthInt() + '/' + dayPosted + '/' + yearPosted + ', ' + formatTime(timePosted);
+  } else {
+      let timePostedArray = dateAndTimePosted.split(' ');
+      let monthPosted = timePostedArray[1];
+      let dayPosted = timePostedArray[2];
+      let yearPosted = timePostedArray[5];
+      if(isYears)
+        return getMonthInt() + '/' + dayPosted + '/' + yearPosted;
+      else
+        return monthPosted + ' ' + dayPosted;
+  }
 }
 
 function compareDates(date, isMessageDate) {
@@ -54,8 +63,13 @@ function compareDates(date, isMessageDate) {
   let minutes = seconds/60;
   let hours = minutes/60;
   let days = hours/24;
-  if(days > 2) {
-      timePostedString = formatDatePosted(date, isMessageDate);
+  let years = days/365;
+  //days > 2
+  if(true) {
+      if(years >= 1)
+        timePostedString = formatDatePosted(date, isMessageDate, true);
+      else
+        timePostedString = formatDatePosted(date, isMessageDate);
   } else if(hours >= 24) {
       timePostedString = Math.round(days);
       if(isMessageDate) {

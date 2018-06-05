@@ -913,14 +913,14 @@ button.button-primary svg {
   fill: #fff;
 }
 /* line 70, ../sass/circle/core/_buttons.sass */
-.button.button-primary:hover, input[type="submit"].button-primary:hover,
-input[type="reset"].button-primary:hover,
-input[type="button"].button-primary:hover, input[type="submit"].button-primary:focus,
+.button.button-primary:not(.no-hover):hover, input[type="submit"].button-primary:not(.no-hover):hover,
+input[type="reset"].button-primary:not(.no-hover):hover,
+input[type="button"].button-primary:not(.no-hover):hover, input[type="submit"].button-primary:focus,
 input[type="reset"].button-primary:focus,
 input[type="button"].button-primary:focus, .button.button-primary:focus, input[type="submit"].button-primary:focus,
 input[type="reset"].button-primary:focus,
 input[type="button"].button-primary:focus,
-button.button-primary:hover,
+button.button-primary:not(.no-hover):hover,
 button.button-primary:focus {
   background-color: #0c85d0;
 }
@@ -2703,10 +2703,33 @@ button > span {
 	font-size: 14px;
 }
 
+.char-div {
+  position: absolute;
+  right: 6%;
+  top: 155%;
+}
+
 div:focus,
 input:focus,
 select:focus,
 textarea:focus,
 button:focus {
     outline: none;
+}
+
+/* Disabling hover effects when there is a problem with user input */
+.no-hover:hover {
+  color: #fff;
+  background-color: #1da1f2;
+  opacity: .5;
+  fill: #fff;
+  box-shadow: none;
+}
+
+/* Styling user profile pic in header */
+#profile-pic {
+  position: absolute;
+  top: 9.5%;
+  left: 5.5%;
+  outline: inherit;
 }

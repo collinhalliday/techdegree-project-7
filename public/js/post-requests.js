@@ -8,6 +8,10 @@ document.addEventListener("DOMContentLoaded", function(){
   const unfollowLinks = document.getElementsByClassName('unfollow');
   const friendNames = document.getElementsByClassName('friend-name');
   const friendUserNames = document.getElementsByClassName('screen-name');
+  const tweetForm = document.getElementById('tweet-form');
+  const tweetTextArea = document.getElementById('tweet-textarea');
+  const tweetButton = document.getElementsByClassName('button-primary')[0];
+  const tweetChar = document.getElementById('tweet-char');
 
   const pictureElements = document.getElementsByClassName('app--avatar');
   let pictureUrl;
@@ -54,7 +58,6 @@ document.addEventListener("DOMContentLoaded", function(){
 
       if((event.target.tagName === 'path' && replyLinks[i] === event.target.parentNode.parentNode) ||
          (event.target.tagName === 'svg' && replyLinks[i] === event.target.parentNode)) {
-            console.log(event.target);
             for(let i = 0; i < replyLinks.length; i++) {
               if(replyLinks[i] === event.target.parentNode.parentNode ||
                  replyLinks[i] === event.target.parentNode){
@@ -66,6 +69,11 @@ document.addEventListener("DOMContentLoaded", function(){
                       document.getElementById('modal-reply').classList.remove('is-showPlaceholder');
                       if(document.getElementsByClassName('text-div')[0].textContent === '')
                         document.getElementById('modal-reply').className += ' is-showPlaceholder';
+                      document.getElementsByClassName('char-div')[0].textContent = document.getElementsByClassName('text-div')[0].textContent.length;
+                      validateFormInput(document.getElementsByClassName('text-div')[0].textContent,
+                                        document.getElementsByClassName('modal-submit')[0],
+                                        'modal-submit no-hover',
+                                        document.getElementsByClassName('char-div')[0]);
                     });
                     document.getElementsByClassName('modal-submit')[0].addEventListener('click', function(event) {
                       let message = document.getElementsByClassName('text-div')[0].textContent;
@@ -78,6 +86,33 @@ document.addEventListener("DOMContentLoaded", function(){
       }
     });
   }
+
+  //Form input validation for tweets
+  tweetTextArea.addEventListener('input', function() {
+    tweetChar.textContent = tweetTextArea.value.length;
+    validateFormInput(tweetTextArea.value, tweetButton, 'button-primary no-hover', tweetChar);
+    // if(tweetTextArea.value.length === 0) {
+    //     tweetButton.disabled = true;
+    //     tweetButton.style.opacity = .5;
+    //     tweetButton.className = 'button-primary no-hover';
+    // } else if(tweetTextArea.value.length > 140) {
+    //     tweetButton.disabled = true;
+    //     tweetButton.style.opacity = .5;
+    //     tweetButton.className = 'button-primary no-hover';
+    //     tweetChar.style.color = 'red';
+    // } else {
+    //     tweetButton.disabled = false;
+    //     tweetButton.style.opacity = 1;
+    //     tweetButton.classList.remove('no-hover');
+    //     tweetChar.style.color = '';
+    // }
+  });
+
+  tweetButton.addEventListener('click', function() {
+    const tweetInput = document.getElementById('tweet-input');
+    tweetInput.value = tweetTextArea.value;
+    tweetForm.submit();
+  });
 
 //post('/reply', { created_at: `${timeStamps[i].textContent}` }, 'post');
 
@@ -101,6 +136,24 @@ function post(path, params, method) {
 
     document.body.appendChild(form);
     form.submit();
+}
+
+function validateFormInput(inputText, button, buttonClassName, char) {
+  if(inputText.length === 0) {
+      button.disabled = true;
+      button.style.opacity = .5;
+      button.className = buttonClassName;
+  } else if(inputText.length > 140) {
+      button.disabled = true;
+      button.style.opacity = .5;
+      button.className = buttonClassName;
+      char.style.color = 'red';
+  } else {
+      button.disabled = false;
+      button.style.opacity = 1;
+      button.classList.remove('no-hover');
+      char.style.color = '';
+  }
 }
 
 // function createModalWindow(index) {
@@ -178,11 +231,12 @@ function createModalWindow(index) {
        html += '<div name="reply" id="modal-reply" class="modal-reply is-showPlaceholder" contenteditable="true" spellcheck="true" ';
        html += 'role="textbox" aria-multiline="true"';
        html += 'data-placeholder-reply="Add another Tweet" dir="ltr"';
-       html += 'aria-expanded="false"><div class="text-div"></div></div>'
+       html += 'aria-expanded="false" aria-owns="typeahead-dropdown-6"><div class="text-div"></div></div>';
+       html += '<div class="char-div">0</div>';
        html += '<div><br></div>';
        html += '<input type="hidden" name="created_at" value="' + document.getElementsByClassName('time-stamp')[0].textContent + '">'
        html += '<input class="hidden-input-message" type="hidden" name="replyMessage" value="">';
-       html += '<button type="button" class="modal-submit"><span>Tweet</span></button>';
+       html += '<button type="button" class="modal-submit no-hover" style="opacity: 0.5;" disabled><span>Tweet</span></button>';
        html += '</form></div>';
   element.innerHTML = html;
 
