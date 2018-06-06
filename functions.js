@@ -64,8 +64,7 @@ function compareDates(date, isMessageDate) {
   let hours = minutes/60;
   let days = hours/24;
   let years = days/365;
-  //days > 2
-  if(true) {
+  if(days > 2) {
       if(years >= 1)
         timePostedString = formatDatePosted(date, isMessageDate, true);
       else

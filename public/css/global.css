@@ -2733,3 +2733,89 @@ button:focus {
   left: 5.5%;
   outline: inherit;
 }
+
+/* Styling no tweet/message info */
+
+.no-data {
+  position: relative;
+  font-size: 18px;
+  top: 5%;
+}
+
+/******************************************ERROR PAGE*****************************************/
+
+.button-primary-small {
+  margin-top: 50px;
+  background-color: #1da1f2;
+  border: 0;
+  border-radius: 8px;
+  font-size: 1em;
+  font-weight: bold;
+  padding: 8px 10px;
+  color: #fff;
+  fill: #fff;
+  font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
+  text-decoration: none;
+}
+
+.button-primary-small:hover {
+  background-color: #0c85d0;
+  color: #fff;
+  box-shadow: 0 0 0 2px #1da1f2 inset;
+  cursor: pointer;
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  transition: all 0.2s;
+}
+
+.desk {
+  width: 80%;
+  color: #727C85;
+  margin: auto;
+  text-align: center;
+}
+
+.desk h1 {
+  font-weight: 400;
+}
+
+.desk-items {
+  display: block;
+  width: 100%;
+  max-width: 600px;
+  margin: auto;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.paper {
+  text-align: left;
+  color: #34393D;
+  height: 500px;
+  background-color: #f8f8f8;
+  background-size: 100% 2.5em;
+  background-image: linear-gradient(rgba(234, 236, 211, 1) 0.1em, transparent 0.2em);
+  border-left: 0.2em solid rgba(29, 161, 242, 0.5);
+  padding-left: 20px;
+  margin-top: 70px;
+  overflow: scroll;
+}
+
+.paper pre {
+  font-size: 1em;
+  line-height: 3.15em;
+  white-space: pre-wrap;       /* css-3 */
+  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;      /* Opera 4-6 */
+  white-space: -o-pre-wrap;    /* Opera 7 */
+  word-wrap: break-word;       /* Internet Explorer 5.5+ */
+  margin-top: 0;
+}
+
+.tear {
+  background-image: url("../images/tear.svg");
+  background-repeat: repeat-x;
+  width: 100%;
+  height: 24px;
+}
