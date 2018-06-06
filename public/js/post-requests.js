@@ -34,28 +34,6 @@ document.addEventListener("DOMContentLoaded", function(){
     });
     replyLinks[i].parentNode.addEventListener('click', function (event) {
       let index;
-      // if(event.target.tagName === 'path') {
-      //   for(let i = 0; i < replyLinks.length; i++) {
-      //     if(replyLinks[i] === event.target.parentNode.parentNode){
-      //       index = i;
-      //       // let modalHTML = createModalWindow(event.target.parentNode.parentNode.parentNode);
-      //       let modalHTML = createModalWindow(index);
-      //       document.body.appendChild(modalHTML);
-      //       document.getElementById('modal-reply').addEventListener('input', function() {
-      //         document.getElementById('modal-reply').classList.remove('is-showPlaceholder');
-      //         if(document.getElementsByClassName('text-div')[0].textContent === '')
-      //           document.getElementById('modal-reply').className += ' is-showPlaceholder';
-      //       });
-      //       document.getElementsByClassName('modal-submit')[0].addEventListener('click', function(event) {
-      //         let message = document.getElementsByClassName('text-div')[0].textContent;
-      //         document.getElementsByClassName('hidden-input-message')[0].value = message;
-      //         document.getElementsByTagName('form')[1].submit();
-      //       });
-      //       setOverlay();
-      //     }
-      //   }
-      // }
-
       if((event.target.tagName === 'path' && replyLinks[i] === event.target.parentNode.parentNode) ||
          (event.target.tagName === 'svg' && replyLinks[i] === event.target.parentNode)) {
             for(let i = 0; i < replyLinks.length; i++) {
@@ -91,21 +69,6 @@ document.addEventListener("DOMContentLoaded", function(){
   tweetTextArea.addEventListener('input', function() {
     tweetChar.textContent = tweetTextArea.value.length;
     validateFormInput(tweetTextArea.value, tweetButton, 'button-primary no-hover', tweetChar);
-    // if(tweetTextArea.value.length === 0) {
-    //     tweetButton.disabled = true;
-    //     tweetButton.style.opacity = .5;
-    //     tweetButton.className = 'button-primary no-hover';
-    // } else if(tweetTextArea.value.length > 140) {
-    //     tweetButton.disabled = true;
-    //     tweetButton.style.opacity = .5;
-    //     tweetButton.className = 'button-primary no-hover';
-    //     tweetChar.style.color = 'red';
-    // } else {
-    //     tweetButton.disabled = false;
-    //     tweetButton.style.opacity = 1;
-    //     tweetButton.classList.remove('no-hover');
-    //     tweetChar.style.color = '';
-    // }
   });
 
   tweetButton.addEventListener('click', function() {
@@ -113,8 +76,6 @@ document.addEventListener("DOMContentLoaded", function(){
     tweetInput.value = tweetTextArea.value;
     tweetForm.submit();
   });
-
-//post('/reply', { created_at: `${timeStamps[i].textContent}` }, 'post');
 
 function post(path, params, method) {
     var form = document.createElement("form");
@@ -155,49 +116,6 @@ function validateFormInput(inputText, button, buttonClassName, char) {
       char.style.color = '';
   }
 }
-
-// function createModalWindow(index) {
-//   let pictureElement = pictureElements[index + 1];
-//   pictureUrl = pictureElement.style.backgroundImage.replace('url(', '').replace(')', '').replace('"', '').replace('"', '');
-//   let name = names[index].textContent;
-//   userName = names[index].nextSibling.textContent;
-//   let timeSent = timesSent[index].textContent;
-//   message = tweets[index].children[2].textContent;
-//   let element = document.createElement('div');
-//   element.className = 'modal';
-//   element.id = 'myModal';
-//   let html = '<div class="modal-header">';
-//        html += '<span class="close">&times;</span>';
-//        html += '<h1>Add another Tweet</h1>';
-//        html += '</div>';
-//        html += '<div class="modal-content">';
-//        html += '<div class="modal-image"><img src="' +
-//                pictureUrl +
-//                '"/></div>';
-//        html += '<div class="modal-text">';
-//        html += '<p class="modal-name">' + name + '</p>';
-//        html += '<p class="modal-username">' + userName + '</p>';
-//        html += '<p class="modal-time-sent">' + timeSent + '</p>';
-//        html += '<p class="modal-message">' + message + '</p>';
-//        html += '</div>';
-//        html += '<div class="form">';
-//        html += '<form action="/reply" method="post">';
-//        html += '<input type="textarea" name="reply" class="modal-reply" placeholder="Add another Tweet">';
-//        html += '<button type="submit" class="modal-submit"><span>Tweet</span></button>';
-//        html += '</form></div>';
-//   element.innerHTML = html;
-//
-//   //Creates an event listener for the modal window and provides handlers for the close button.
-//   element.addEventListener('click', function(event) {
-//     modalWindow = document.getElementsByClassName('#myModal')[0];
-//     //Close button handler
-//     if(event.target.className === 'close') {
-//         modalWindow.parentNode.removeChild(modalWindow);
-//         removeOverlay();
-//     }
-//   });
-//   return element;
-// }
 
 function createModalWindow(index) {
   let pictureElement = pictureElements[index + 1];
@@ -281,20 +199,6 @@ function removeOverlay() {
   overlay.style.zIndex = '';
 }
 
-// function createHashLinks(messageElement) {
-//   if(messageElement.hasChildNodes()) {
-//     let messageArray = messageElement.textContent.split('#');
-//     let alternativeText = '';
-//     for(let i = 0; i < messageArray.length; i++) {
-//       if(i > 0)
-//         alternativeText += `<a class="hashlinks" href="http://twitter.com/hashtag/${messageArray[i]}?src=hash"> #${messageArray[i]}</a>`;
-//       else
-//         alternativeText += messageArray[i] + ' ';
-//     }
-//     return alternativeText;
-//   }
-// }
-
 function createLinks(messageElement) {
   if(messageElement.hasChildNodes()) {
     let messageArray = messageElement.textContent.split(' ');
@@ -318,18 +222,5 @@ function createLinks(messageElement) {
     return alternativeText;
   }
 }
-
-// function createLinks(data) {
-//   let messageArray = data.text.split(' ');
-//   let alternativeText = '';
-//   for(let i = 0; i < messageArray.length; i++) {
-//     if(messageArray[i].indexOf('://') > -1)
-//     //  alternativeText += `<a href="http://twitter.com/hashtag/${messageArray[i]}?src=hash">#${messageArray[i]}</a>`;
-//       alternativeText += `<a class="links" href="${messageArray[i]}"> ${messageArray[i]}</a>`;
-//     else
-//       alternativeText += messageArray[i] + ' ';
-//   }
-//   return alternativeText;
-// }
 
 });

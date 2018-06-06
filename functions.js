@@ -1,22 +1,4 @@
-//May not need this. If I do, it will be to limit the number of days in which the API searches back for tweets.
-function getCurrentDate() {
-  let date = new Date();
-	let year = date.getFullYear();
-	let month = date.getMonth();
-	let day = date.getDate();
-  day -= 1;
-	return year + '-' + month + '-' + day;
-}
-
 function formatTimeStamp(timeStamp) {
-  // let timeObj = {};
-  // timeObj.timeInMs = Date.now();
-  // timeObj.msDifference = timeObj.timeInMs - timeStamp;
-  // timeObj.seconds = msDifference/1000;
-  // timeObj.minutes = seconds/60;
-  // timeObj.hours = minutes/60;
-  // timeObj.days = hours/24;
-  // return timeObj;
   return new Date(parseInt(timeStamp)).toString();
 }
 
@@ -111,34 +93,6 @@ function compareDates(date, isMessageDate) {
   return timePostedString;
 }
 
-// function createHashLinks(tweet) {
-//   if(tweet.entities.hashtags.length > 0) {
-//     let messageArray = tweet.text.split('#');
-//     let alternativeText = '';
-//     for(let i = 0; i < messageArray.length; i++) {
-//       if(i > 0)
-//       //  alternativeText += `<a href="http://twitter.com/hashtag/${messageArray[i]}?src=hash">#${messageArray[i]}</a>`;
-//         alternativeText += `<a class="hashlinks" href="http://twitter.com/hashtag/${messageArray[i]}?src=hash"> #${messageArray[i]}</a>`;
-//       else
-//         alternativeText += messageArray[i] + ' ';
-//     }
-//     return alternativeText;
-//   }
-// }
-
-// function createHashLinks(data) {
-//     let messageArray = data.text.split('#');
-//     let alternativeText = '';
-//     for(let i = 0; i < messageArray.length; i++) {
-//       if(i > 0)
-//       //  alternativeText += `<a href="http://twitter.com/hashtag/${messageArray[i]}?src=hash">#${messageArray[i]}</a>`;
-//         alternativeText += `<a class="hashlinks" href="http://twitter.com/hashtag/${messageArray[i]}?src=hash"> #${messageArray[i]}</a>`;
-//       else
-//         alternativeText += messageArray[i] + ' ';
-//     }
-//     return alternativeText;
-// }
-
 function createHashLinks(data) {
     let messageArray = data.text.split(' ');
     let alternativeText = '';
@@ -152,25 +106,11 @@ function createHashLinks(data) {
     return alternativeText;
 }
 
-// function createLinks(data) {
-//   let messageArray = data.text.split('://');
-//   let alternativeText = '';
-//   for(let i = 0; i < messageArray.length; i++) {
-//     if(i > 0)
-//     //  alternativeText += `<a href="http://twitter.com/hashtag/${messageArray[i]}?src=hash">#${messageArray[i]}</a>`;
-//       alternativeText += `<a class="links" href="http://${messageArray[i]}"> http://${messageArray[i]}</a>`;
-//     else
-//       alternativeText += messageArray[i] + ' ';
-//   }
-//   return alternativeText;
-// }
-
 function createLinks(data) {
   let messageArray = data.text.split(' ');
   let alternativeText = '';
   for(let i = 0; i < messageArray.length; i++) {
     if(messageArray[i].indexOf('://') > -1)
-    //  alternativeText += `<a href="http://twitter.com/hashtag/${messageArray[i]}?src=hash">#${messageArray[i]}</a>`;
       alternativeText += `<a class="links" href="${messageArray[i]}"> ${messageArray[i]}</a> `;
     else
       alternativeText += messageArray[i] + ' ';
