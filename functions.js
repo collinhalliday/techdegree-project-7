@@ -1,7 +1,11 @@
+//Formats timestamp received from twitter api in response to request for direct messages into date
+//format to be used in functions below.
 function formatTimeStamp(timeStamp) {
   return new Date(parseInt(timeStamp)).toString();
 }
 
+//Formats the date posted displayed on the app for both messages and tweets. This is called when tweets
+//Or messages are older than 2 days.
 function formatDatePosted(dateAndTimePosted, isMessageDate, isYears) {
   isYears = isYears || false;
   function getMonthInt() {
@@ -35,6 +39,10 @@ function formatDatePosted(dateAndTimePosted, isMessageDate, isYears) {
   }
 }
 
+//Compares the date posted of a tweet or direct message to get the amount of time that has passed
+//since it was posted. Then displays the time since it was posted depending upon how much time
+//has passed since posted. Follows format from twitter. Also, as explained above, it will post exact
+//date and time for messages that are older than 2 days.
 function compareDates(date, isMessageDate) {
   isMessageDate = isMessageDate || false;
 
@@ -93,6 +101,7 @@ function compareDates(date, isMessageDate) {
   return timePostedString;
 }
 
+//Creates hash links in text of tweets and direct messages.
 function createHashLinks(data) {
     let messageArray = data.text.split(' ');
     let alternativeText = '';
@@ -106,6 +115,7 @@ function createHashLinks(data) {
     return alternativeText;
 }
 
+//Creates regular links in text of tweets and direct messages.
 function createLinks(data) {
   let messageArray = data.text.split(' ');
   let alternativeText = '';
@@ -118,7 +128,39 @@ function createLinks(data) {
   return alternativeText;
 }
 
+//Creates and resturns an api call wrapped in a promise.
+function createTweetPromise(twitObj, path, params) {
+  return new Promise(function(resolve, reject) {
+    twitObj.post(path, params, (err, data, response) => {
+      if(err)
+        reject(err);
+      resolve(data);
+      });
+    });
+}
+
+//Formats new tweets received from api call and adds them to tweet array. Updates timePosted for
+//tweets and messages in their corresponding arrays.
+function addNewTweet(tweetArray, messageArray, tweet) {
+  tweet.postedValue = compareDates(tweet.created_at);
+  tweet.text = createLinks(tweet);
+  tweet.text = createHashLinks(tweet);
+  tweetArray.unshift(tweet);
+  if(tweetArray.length > 5)
+    tweetArray.pop();
+  tweetArray.forEach(function(tweet) {
+    tweet.postedValue = compareDates(tweet.created_at);
+  });
+  if(messageArray.length > 0) {
+    messageArray.forEach(function(message) {
+      message.timeSent = compareDates(formatTimeStamp(message.created_timestamp), true);
+    });
+  }
+}
+
 module.exports.createHashLinks = createHashLinks;
 module.exports.createLinks = createLinks;
 module.exports.compareDates = compareDates;
 module.exports.formatTimeStamp = formatTimeStamp;
+module.exports.createTweetPromise = createTweetPromise;
+module.exports.addNewTweet = addNewTweet;

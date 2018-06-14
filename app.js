@@ -1,3 +1,4 @@
+//App setup.
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
@@ -6,6 +7,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static('public'));
 app.set('view engine', 'pug');
 
+//Route setup
 const mainRoutes = require('./routes/');
 app.use(mainRoutes);
 

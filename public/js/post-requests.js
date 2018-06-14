@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function(){
+  //Grabbing elements and setting variables.
   const tweetList = document.getElementsByClassName('app--tweet--list')[0];
   const tweets = tweetList.children;
   const likeLinks = document.getElementsByClassName('app--like');
@@ -12,7 +13,6 @@ document.addEventListener("DOMContentLoaded", function(){
   const tweetTextArea = document.getElementById('tweet-textarea');
   const tweetButton = document.getElementsByClassName('button-primary')[0];
   const tweetChar = document.getElementById('tweet-char');
-
   const pictureElements = document.getElementsByClassName('app--avatar');
   let pictureUrl;
   const names = document.getElementsByTagName('h4');
@@ -20,63 +20,85 @@ document.addEventListener("DOMContentLoaded", function(){
   const timesSent = document.getElementsByClassName('app--tweet--timestamp');;
   let message;
 
-
-  for(let i = 0; i < likeLinks.length; i++) {
-    likeLinks[i].parentNode.addEventListener('click', function () {
-      post('/like', { created_at: `${timeStamps[i].textContent}` }, 'post');
-    });
-    retweetLinks[i].parentNode.addEventListener('click', function () {
-      post('/retweet', { created_at: `${timeStamps[i].textContent}` }, 'post');
-    });
-    unfollowLinks[i].addEventListener('click', function() {
-      console.log('poop');
-      post('/unfollow', { name: `${friendNames[i].textContent}`, screen_name: `${friendUserNames[i].textContent}` }, 'post');
-    });
-    replyLinks[i].parentNode.addEventListener('click', function (event) {
-      let index;
-      if((event.target.tagName === 'path' && replyLinks[i] === event.target.parentNode.parentNode) ||
-         (event.target.tagName === 'svg' && replyLinks[i] === event.target.parentNode)) {
-            for(let i = 0; i < replyLinks.length; i++) {
-              if(replyLinks[i] === event.target.parentNode.parentNode ||
-                 replyLinks[i] === event.target.parentNode){
-                    index = i;
-                    // let modalHTML = createModalWindow(event.target.parentNode.parentNode.parentNode);
-                    let modalHTML = createModalWindow(index);
-                    document.body.appendChild(modalHTML);
-                    document.getElementById('modal-reply').addEventListener('input', function() {
-                      document.getElementById('modal-reply').classList.remove('is-showPlaceholder');
-                      if(document.getElementsByClassName('text-div')[0].textContent === '')
-                        document.getElementById('modal-reply').className += ' is-showPlaceholder';
-                      document.getElementsByClassName('char-div')[0].textContent = document.getElementsByClassName('text-div')[0].textContent.length;
-                      validateFormInput(document.getElementsByClassName('text-div')[0].textContent,
-                                        document.getElementsByClassName('modal-submit')[0],
-                                        'modal-submit no-hover',
-                                        document.getElementsByClassName('char-div')[0]);
-                    });
-                    document.getElementsByClassName('modal-submit')[0].addEventListener('click', function(event) {
-                      let message = document.getElementsByClassName('text-div')[0].textContent;
-                      document.getElementsByClassName('hidden-input-message')[0].value = message;
-                      document.getElementsByTagName('form')[1].submit();
-                    });
-                    setOverlay();
-                  }
-            }
-      }
-    });
+  //If user has friends, there will be unfollow links on the page. This function provides them
+  //with functionality by adding event listeners that post to the /unfollow route on the server
+  //when each link is clicked.
+  if(unfollowLinks) {
+    for(let i = 0; i < unfollowLinks.length; i++) {
+      unfollowLinks[i].addEventListener('click', function() {
+        post('/unfollow', { name: `${friendNames[i].textContent}`, screen_name: `${friendUserNames[i].textContent}` }, 'post');
+      });
+    }
   }
 
-  //Form input validation for tweets
+  //If user has tweets, there will be like links, retweet links and reply links on the page. This function provides each
+  //of them with functionality by adding event listeners that, for like links and retweet links, post to the proper routes
+  //on the server. For the reply links, however, a modal window is created similar to that appearing on twitter, allowing
+  //users to type out and sumbit a reply tweet.
+  if(likeLinks) {
+    for(let i = 0; i < likeLinks.length; i++) {
+      //Like link event listeners
+      likeLinks[i].parentNode.addEventListener('click', function () {
+        post('/like', { created_at: `${timeStamps[i].textContent}` }, 'post');
+      });
+      //Retweet link event listeners
+      retweetLinks[i].parentNode.addEventListener('click', function () {
+        post('/retweet', { created_at: `${timeStamps[i].textContent}` }, 'post');
+      });
+      //Reply link event listeners
+      replyLinks[i].parentNode.addEventListener('click', function (event) {
+        let index;
+        if((event.target.tagName === 'path' && replyLinks[i] === event.target.parentNode.parentNode) ||
+           (event.target.tagName === 'svg' && replyLinks[i] === event.target.parentNode)) {
+              for(let i = 0; i < replyLinks.length; i++) {
+                if(replyLinks[i] === event.target.parentNode.parentNode ||
+                   replyLinks[i] === event.target.parentNode){
+                      index = i;
+                      //Creates modal window for reply tweets
+                      let modalHTML = createModalWindow(index);
+                      document.body.appendChild(modalHTML);
+                      //Adds event listener to modal window that show and remove placeholder text, and validates the input, limiting
+                      //it to 140 characters or less.
+                      document.getElementById('modal-reply').addEventListener('input', function() {
+                        document.getElementById('modal-reply').classList.remove('is-showPlaceholder');
+                        if(document.getElementsByClassName('text-div')[0].textContent === '')
+                          document.getElementById('modal-reply').className += ' is-showPlaceholder';
+                        document.getElementsByClassName('char-div')[0].textContent = document.getElementsByClassName('text-div')[0].textContent.length;
+                        validateFormInput(document.getElementsByClassName('text-div')[0].textContent,
+                                          document.getElementsByClassName('modal-submit')[0],
+                                          'modal-submit no-hover',
+                                          document.getElementsByClassName('char-div')[0]);
+                      });
+                      //Adds event listener to the button on the modal window that submits the related form and post request upon
+                      //each click, assuming user has typed something and that something is 140 characters or less.
+                      document.getElementsByClassName('modal-submit')[0].addEventListener('click', function(event) {
+                        let message = document.getElementsByClassName('text-div')[0].textContent;
+                        document.getElementsByClassName('hidden-input-message')[0].value = message;
+                        document.getElementsByTagName('form')[1].submit();
+                      });
+                      setOverlay();
+                    }
+              }
+        }
+      });
+    }
+  }
+
+  //Form input validation for tweet form at bottom of app page.
   tweetTextArea.addEventListener('input', function() {
     tweetChar.textContent = tweetTextArea.value.length;
     validateFormInput(tweetTextArea.value, tweetButton, 'button-primary no-hover', tweetChar);
   });
 
+  //Adds event listener to to button on tweet form that submits for assuming input is valid.
   tweetButton.addEventListener('click', function() {
     const tweetInput = document.getElementById('tweet-input');
     tweetInput.value = tweetTextArea.value;
     tweetForm.submit();
   });
 
+//Post function that essentially creates hidden forms and inputs to perform post requests upon clicks of
+//unfollow, like and retweet links. Forms are created and then submitted upon function execution.
 function post(path, params, method) {
     var form = document.createElement("form");
     form.setAttribute("method", method);
@@ -87,9 +109,7 @@ function post(path, params, method) {
             var hiddenField = document.createElement("input");
             hiddenField.setAttribute("type", "hidden");
             hiddenField.setAttribute("name", key);
-            console.log("Key: " + key);
             hiddenField.setAttribute("value", params[key]);
-              console.log("params[key]: " + params[key]);
 
             form.appendChild(hiddenField);
         }
@@ -99,6 +119,8 @@ function post(path, params, method) {
     form.submit();
 }
 
+//Validates form input for both tweet and reply forms, enabling and disabling (greying out) related buttons
+//appropriately, rendering the character counter red when input is 140 chars or greater.
 function validateFormInput(inputText, button, buttonClassName, char) {
   if(inputText.length === 0) {
       button.disabled = true;
@@ -117,6 +139,8 @@ function validateFormInput(inputText, button, buttonClassName, char) {
   }
 }
 
+//Creates the modal window that appears upon click of reply button. Designed after the same window appearing on
+//twitter for tweet replies.
 function createModalWindow(index) {
   let pictureElement = pictureElements[index + 1];
   pictureUrl = pictureElement.style.backgroundImage.replace('url(', '').replace(')', '').replace('"', '').replace('"', '');
@@ -167,11 +191,10 @@ function createModalWindow(index) {
         removeOverlay();
     }
   });
-
   return element;
 }
 
-//Setting properties and values for the overlay div to provide lightbox effect.
+//Setting properties and values for the overlay div to provide lightbox effect when modal window appears.
 function setOverlay() {
   let overlay = document.getElementById('overlay');
   overlay.style.position = 'fixed';
@@ -199,6 +222,7 @@ function removeOverlay() {
   overlay.style.zIndex = '';
 }
 
+//Allows links and and hashtags in message text to appear as such, instead of just plain text.
 function createLinks(messageElement) {
   if(messageElement.hasChildNodes()) {
     let messageArray = messageElement.textContent.split(' ');
@@ -208,7 +232,6 @@ function createLinks(messageElement) {
         alternativeText += `<a class="links" href="${messageArray[i]}"> ${messageArray[i]}</a> `;
       else
         alternativeText += messageArray[i] + ' ';
-      console.log(messageArray[i]);
     }
     messageArray = alternativeText.split(' ');
     alternativeText = '';

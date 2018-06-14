@@ -2501,34 +2501,6 @@ input[type="button"] {
   padding: 16px 20px;
 }
 
-/* Removing underlining from added links */
-
-.links,
-.hashlinks,
-.app--tweet--author,
-.app--message--list > li > h3 > a {
-  text-decoration: none;
-}
-
-/* Setting colors for message links */
-
-p.app--message--text > .hashlinks,
-p.app--message--text > .links {
-  color: #0000FF;
-}
-
-p.app--message--text > .hashlinks:hover,
-p.app--message--text > .links:hover {
-  color: #000099;
-}
-
-/* Allowing scroll on message div to see messages otherwise cut off by tweet div */
-.scroll {
-  overflow: scroll;
-  height: 75%;
-}
-
-
 /*************************************************** MODAL WINDOW ***********************************************/
 
 .modal {
@@ -2709,6 +2681,36 @@ button > span {
   top: 155%;
 }
 
+/***************************** Misc. *****************************/
+
+/* Removing underlining from added links */
+
+.links,
+.hashlinks,
+.app--tweet--author,
+.app--message--list > li > h3 > a {
+  text-decoration: none;
+}
+
+/* Setting colors for message links */
+
+p.app--message--text > .hashlinks,
+p.app--message--text > .links {
+  color: #0000FF;
+}
+
+p.app--message--text > .hashlinks:hover,
+p.app--message--text > .links:hover {
+  color: #000099;
+}
+
+/* Allowing scroll on message div to see messages otherwise cut off by tweet div */
+.scroll {
+  overflow: scroll;
+  height: 75%;
+}
+
+
 div:focus,
 input:focus,
 select:focus,
@@ -2740,6 +2742,17 @@ button:focus {
   position: relative;
   font-size: 18px;
   top: 5%;
+}
+
+
+/* Styling header background pic when there is no error */
+#header-pic {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 /******************************************ERROR PAGE*****************************************/
