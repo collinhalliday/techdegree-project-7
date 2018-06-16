@@ -6,25 +6,25 @@ This project was done in conjunction with my TeamTreehouse full-stack JavaScript
 
 ## Installation:
 
-With npm and node.js installed on your computer, entering the following command in your terminal will download all of the project's dependencies:
-`npm install`
+With npm and node.js installed on your computer, use `npm install` to download all of the project's dependencies.
 
 ## Usage:
 
 Once the project's dependencies are installed, the user must have an existing Twitter account, and through that account, the user must create a Twitter application [here](https://apps.twitter.com) Through this process, the user will generate keys and access tokens that must be placed in a config.js file in the project's root directory. The format for placement of the keys and access tokens is as follows:
 
-`module.exports = {
+```
+module.exports = {
   consumer_key: '*************************',
   consumer_secret: '*************************************************',
   access_token: '*************************************************',
   access_token_secret: '*************************************************',
   timeout_ms: 60 * 1000
-};`
+};
+```
 
 For more detailed instructions on this process, look [here](http://iag.me/socialmedia/how-to-create-a-twitter-app-in-8-easy-steps/)
 
-To run the app, enter the following command in your terminal:
-`npm start`
+Use `npm start` to run the app.
 
 Open a browser window, visit the following link and you're ready to go.
 http://localhost:3000
