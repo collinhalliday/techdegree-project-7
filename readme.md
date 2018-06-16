@@ -6,11 +6,11 @@ This project was done in conjunction with my TeamTreehouse full-stack JavaScript
 
 ## Installation:
 
-With npm and node.js installed on your computer, use `npm install` to download all of the project's dependencies.
+With npm and node.js installed on your computer and the project files downloaded, use `npm install` to download all of the project's dependencies.
 
 ## Usage:
 
-Once the project's dependencies are installed, the user must have an existing Twitter account, and through that account, the user must create a Twitter application [here](https://apps.twitter.com) Through this process, the user will generate keys and access tokens that must be placed in a config.js file in the project's root directory. The format for placement of the keys and access tokens is as follows:
+Once the project's dependencies are installed, the user must have an existing Twitter account, and through that account, the user must create a Twitter application [here](https://apps.twitter.com). Through this process, the user will generate keys and access tokens that must be placed in a config.js file in the project's root directory. The format for placement of the keys and access tokens is as follows:
 
 ```
 module.exports = {
